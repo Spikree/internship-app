@@ -226,7 +226,9 @@ class ProfileSection extends StatelessWidget {
                   ),
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, 'journey');
+              },
             ),
           ),
         ],

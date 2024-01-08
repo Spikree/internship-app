@@ -32,6 +32,7 @@ class _PersonalState extends State<Personal> {
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController joiningDateController = TextEditingController();
 
   String? _nameError;
   String? _employeeCodeError;
@@ -39,6 +40,7 @@ class _PersonalState extends State<Personal> {
   String? _orgError;
   String? _passwordError;
   String? _confirmPasswordError;
+  String? _joiningDateError;
 
   bool _obscurePassword = true;
   String? selectedValue;
@@ -277,14 +279,14 @@ class _PersonalState extends State<Personal> {
                                 pickedDate != _joiningDate) {
                               setState(() {
                                 _joiningDate = pickedDate;
-                                mobileNumberController.text =
+                                joiningDateController.text =
                                     _joiningDate.toString();
                               });
                             }
                           },
                           child: IgnorePointer(
                             child: TextFormField(
-                              controller: mobileNumberController,
+                              controller: joiningDateController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -295,14 +297,14 @@ class _PersonalState extends State<Personal> {
                                 hintText: "Joining date @ VI Group",
                                 hintStyle: const TextStyle(
                                     color: Colors.grey, fontSize: 15),
-                                errorText: _mobileNumberError,
+                                errorText: _joiningDateError,
                               ),
                               validator: (value) {
                                 if (value!.isEmpty ||
                                     value.length > 10 ||
                                     value.length < 10) {
                                   setState(() {
-                                    _mobileNumberError = 'please select a date';
+                                    _joiningDateError = 'please select a date';
                                   });
                                   return 'Please select a date';
                                 }
@@ -587,7 +589,7 @@ class _PersonalState extends State<Personal> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 1),
                                 child: Text(
-                                  'Save',
+                                  '                            Save                            ',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,

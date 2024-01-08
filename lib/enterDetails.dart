@@ -365,7 +365,7 @@ class _EnterDetailsState extends State<EnterDetails> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 1),
                                 child: Text(
-                                  'Save',
+                                  '                              Save                           ',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,

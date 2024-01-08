@@ -16,11 +16,12 @@ class EmergencyDetails extends StatefulWidget {
 }
 
 class _EmergencyDetailsState extends State<EmergencyDetails> {
-  final _formKey = GlobalKey<FormState>();
+  final _addFormKey = GlobalKey<FormState>();
+  final _editFormKey = GlobalKey<FormState>();
   List<Map<String, String>> tableData = [];
   int srNo = 1;
+  int? _selectedIndex = 0;
 
-  final relationshipController = TextEditingController();
   String selectedRelationship = 'Friend';
   List<String> relationshipOptions = [
     'Spouse',
@@ -70,125 +71,150 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
       ),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          BorderRadius.vertical(bottom: Radius.circular(30))),
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 65,
-                      ),
-                      const Text(
-                        'VG Vishwa',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 40,
-                            fontWeight: FontWeight.w900),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      const Text(
-                        'Emergency Details',
-                        style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      const SizedBox(
-                        height: 60,
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.vertical(bottom: Radius.circular(30))),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columns: [
-                            DataColumn(label: Text('Sr. No')),
-                            DataColumn(label: Text('Name')),
-                            DataColumn(label: Text('Relationship')),
-                            DataColumn(label: Text('Contact')),
-                            DataColumn(label: Text('Action')),
-                          ],
-                          rows: tableData
-                              .asMap()
-                              .entries
-                              .map(
-                                (entry) => DataRow(
-                                  cells: [
-                                    DataCell(Text(entry.value['Sr. No'] ?? '')),
-                                    DataCell(Text(entry.value['Name'] ?? '')),
-                                    DataCell(Text(
-                                        entry.value['Relationship'] ?? '')),
-                                    DataCell(
-                                        Text(entry.value['Contact'] ?? '')),
-                                    DataCell(
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.edit),
-                                            onPressed: () {
-                                              showEditDialog(entry.key);
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.delete),
-                                            onPressed: () {
-                                              deleteRow(entry.key);
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
+                    const SizedBox(
+                      height: 65,
+                    ),
+                    const Text(
+                      'VG Vishwa',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 40,
+                          fontWeight: FontWeight.w900),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Text(
+                      'Emergency Details',
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showAddDialog();
+                            },
+                            child: Text('Add Row'),
+                          ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showAddDialog();
-                        },
-                        child: Text('Add Row'),
-                      ),
-                    ),
+                      ],
+                    )
                   ],
                 ),
-              ],
-            ),
+              ),
+              Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columns: [
+                          DataColumn(label: Text('Sr. No')),
+                          DataColumn(label: Text('Name')),
+                          DataColumn(label: Text('Relationship')),
+                          DataColumn(label: Text('Contact')),
+                          DataColumn(label: Text('Action')),
+                        ],
+                        rows: tableData
+                            .asMap()
+                            .entries
+                            .map(
+                              (entry) => DataRow(
+                                cells: [
+                                  DataCell(Text(entry.value['Sr. No'] ?? '')),
+                                  DataCell(Text(entry.value['Name'] ?? '')),
+                                  DataCell(
+                                      Text(entry.value['Relationship'] ?? '')),
+                                  DataCell(Text(entry.value['Contact'] ?? '')),
+                                  DataCell(
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: () {
+                                            showEditDialog(entry.key);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.delete),
+                                          onPressed: () {
+                                            deleteRow(entry.key);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex ?? 0,
+        selectedItemColor: Colors.black,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+            if (_selectedIndex == 2) {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ProfileSection()),
+              // );
+            }
+          });
+        },
       ),
     );
   }
 
   void showAddDialog() async {
     TextEditingController nameController = TextEditingController();
-    TextEditingController relationshipController = TextEditingController();
     TextEditingController contactController = TextEditingController();
-
-    GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
     await showDialog(
       context: context,
@@ -196,7 +222,7 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
         return AlertDialog(
           title: Text('Add New Row'),
           content: Form(
-            key: _formKey,
+            key: _addFormKey,
             child: Column(
               children: [
                 TextFormField(
@@ -235,18 +261,6 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                   },
                 ),
                 TextFormField(
-                  controller: relationshipController,
-                  decoration: InputDecoration(
-                    labelText: 'Relationship',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a relationship';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
                   controller: contactController,
                   decoration: InputDecoration(
                     labelText: 'Contact',
@@ -274,10 +288,10 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
+                if (_addFormKey.currentState!.validate()) {
                   addRow(
                     nameController.text,
-                    relationshipController.text,
+                    selectedRelationship,
                     contactController.text,
                   );
                   Navigator.of(context).pop();
@@ -293,15 +307,7 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
 
   void showEditDialog(int index) async {
     TextEditingController nameController = TextEditingController();
-    TextEditingController relationshipController = TextEditingController();
     TextEditingController contactController = TextEditingController();
-
-    GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-    // Set initial values based on the selected row data
-    nameController.text = tableData[index]['Name'] ?? '';
-    relationshipController.text = tableData[index]['Relationship'] ?? '';
-    contactController.text = tableData[index]['Contact'] ?? '';
 
     await showDialog(
       context: context,
@@ -309,7 +315,7 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
         return AlertDialog(
           title: Text('Edit Row'),
           content: Form(
-            key: _formKey,
+            key: _editFormKey,
             child: Column(
               children: [
                 TextFormField(
@@ -324,17 +330,28 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                     return null;
                   },
                 ),
-                TextFormField(
-                  controller: relationshipController,
+                DropdownButtonFormField(
+                  value: selectedRelationship,
+                  items: relationshipOptions.map((String relationship) {
+                    return DropdownMenuItem(
+                      value: relationship,
+                      child: Text(relationship),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedRelationship = value!;
+                    });
+                  },
                   decoration: InputDecoration(
                     labelText: 'Relationship',
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a relationship';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Please select a relationship';
+                  //   }
+                  //   return null;
+                  // },
                 ),
                 TextFormField(
                   controller: contactController,
@@ -364,11 +381,11 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
+                if (_editFormKey.currentState!.validate()) {
                   editRow(
                     index,
                     nameController.text,
-                    relationshipController.text,
+                    selectedRelationship,
                     contactController.text,
                   );
                   Navigator.of(context).pop();

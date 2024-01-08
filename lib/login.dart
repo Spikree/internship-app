@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -57,9 +58,9 @@ class _LoginState extends State<Login> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 65,
-                      ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
                       const Text(
                         'VG Vishwa',
                         style: TextStyle(
@@ -68,7 +69,62 @@ class _LoginState extends State<Login> {
                             fontWeight: FontWeight.w900),
                       ),
                       const SizedBox(
-                        height: 25,
+                        height: 5,
+                      ),
+                      Center(
+                        child: Container(
+                          height: 170,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              promoCard('images/Vishwakarma_Institutes.png'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/Vishwakarma_University.png'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/Universal_Wisdom_School.jpg'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/Wisdom_World_School.jpg'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/Vishwakarma_Vidyalaya.png'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/EduplusNow.png'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/Aakar_Foundry.png'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/Bansilal_Cloth_Market.jpg'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/Eduplus_Campus.png'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/Vishwakarma_Publications.png'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/Roott_Square.png'),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              promoCard('images/Investronaut.png'),
+                            ],
+                          ),
+                        ),
                       ),
                       const Text(
                         'Login',
@@ -78,7 +134,7 @@ class _LoginState extends State<Login> {
                             fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(
-                        height: 100,
+                        height: 10,
                       ),
                       Container(
                         padding: const EdgeInsets.all(10),
@@ -112,7 +168,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       const SizedBox(
-                        height: 22,
+                        height: 20,
                       ),
                       Container(
                         padding: const EdgeInsets.all(10),
@@ -183,7 +239,7 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           const SizedBox(
-                            height: 150,
+                            height: 120,
                           )
                         ],
                       ),
@@ -213,7 +269,7 @@ class _LoginState extends State<Login> {
                         ],
                       ),
                       const SizedBox(
-                        height: 50,
+                        height: 20,
                       ),
                       const Center(
                         child: SizedBox(
@@ -225,7 +281,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       const SizedBox(
-                        height: 50,
+                        height: 20,
                       ),
                       Column(
                         children: [
@@ -283,72 +339,6 @@ class _LoginState extends State<Login> {
                 const SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        height: 200,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            promoCard('images/Vishwakarma_Institutes.png'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/Vishwakarma_University.png'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/Universal_Wisdom_School.jpg'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/Wisdom_World_School.jpg'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/Vishwakarma_Vidyalaya.png'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/EduplusNow.png'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/Aakar_Foundry.png'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/Bansilal_Cloth_Market.jpg'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/Eduplus_Campus.png'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/Vishwakarma_Publications.png'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/Roott_Square.png'),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            promoCard('images/Investronaut.png'),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                )
               ],
             ),
           ),
@@ -359,7 +349,7 @@ class _LoginState extends State<Login> {
 
   Widget promoCard(Image) {
     return AspectRatio(
-      aspectRatio: 0.9,
+      aspectRatio: 1.9,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
