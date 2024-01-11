@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 
-void main() => runApp(const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: VerifyOtp(),
-    ));
+void main() => runApp(
+      const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: VerifyEmailReset(),
+      ),
+    );
 
-class VerifyOtp extends StatefulWidget {
-  const VerifyOtp({super.key});
+class VerifyEmailReset extends StatefulWidget {
+  const VerifyEmailReset({super.key});
 
   @override
-  State<VerifyOtp> createState() => _VerifyOtpState();
+  State<VerifyEmailReset> createState() => _VerifyEmailResetState();
 }
 
-class _VerifyOtpState extends State<VerifyOtp> {
-  String? otpError;
+class _VerifyEmailResetState extends State<VerifyEmailReset> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController otpController = TextEditingController();
+  String? _emailError;
+
+  TextEditingController emailController = TextEditingController();
 
   void clear() {
     setState(() {
-      otpError = null;
+      _emailError = null;
     });
   }
 
@@ -65,18 +67,18 @@ class _VerifyOtpState extends State<VerifyOtp> {
                         height: 5,
                       ),
                       const Text(
-                        'Verify OTP',
+                        'Verify Email',
                         style: TextStyle(
                             color: Colors.black87,
                             fontSize: 25,
                             fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(
-                        height: 60,
+                        height: 50,
                       ),
                       const Center(
                         child: Text(
-                          'otp has been sent to your email',
+                          'enter your email',
                           style: TextStyle(
                               color: Colors.black87,
                               fontSize: 18,
@@ -87,36 +89,48 @@ class _VerifyOtpState extends State<VerifyOtp> {
                         height: 60,
                       ),
                       Container(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
-                          child: PinCodeTextField(
-                            appContext: context,
-                            length: 6,
-                            controller: otpController,
-                            keyboardType: TextInputType.number,
-                            pinTheme: PinTheme(
-                              shape: PinCodeFieldShape.circle,
-                              activeFillColor: Colors.white70,
-                              inactiveFillColor: Colors.redAccent,
-                              inactiveColor: Colors.black,
-                              selectedFillColor: Colors.black45,
-                              selectedColor: Colors.red,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: const Color.fromRGBO(244, 243, 243, 1),
+                            borderRadius: BorderRadius.circular(15)),
+                        child: TextFormField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            prefixIcon: const Icon(
+                              Icons.email,
+                              color: Colors.black87,
                             ),
-                            onChanged: (value) {},
+                            hintText: "example@gmail.com",
+                            hintStyle: const TextStyle(
+                                color: Colors.grey, fontSize: 15),
+                            errorText: _emailError,
                           ),
+                          validator: (value) {
+                            if (value!.isEmpty ||
+                                !RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                                    .hasMatch(value)) {
+                              setState(() {
+                                _emailError = 'Enter a valid email address';
+                              });
+                              return 'Enter a valid email address';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 110),
+                            padding: const EdgeInsets.only(left: 105),
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   clear();
-                                  print(otpController.text);
-                                  print('Otp proceed');
-                                  Navigator.pushNamed(context, 'enterDetails');
+                                  Navigator.pushNamed(
+                                      context, 'verifyOtpForPassReset');
+                                  print(emailController.text);
+                                  print('Email Verify success');
                                 }
                               },
                               // ignore: sort_child_properties_last
@@ -124,7 +138,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 2, vertical: 1),
                                 child: Text(
-                                  'Verify otp',
+                                  'Verify Email',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,

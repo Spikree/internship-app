@@ -8,7 +8,7 @@ class ProfileSection extends StatelessWidget {
         backgroundColor: Colors.black,
         title: Row(
           children: [
-            Image.asset('assets/images/logo_vishwa.png', width: 35),
+            Image.asset('images/logo_vishwa.png', width: 35),
             const SizedBox(width: 18),
             const Text(
               "VG Vishwa",
@@ -54,184 +54,196 @@ class ProfileSection extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              tileColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: const BorderSide(color: Colors.white),
-              ),
-              leading: const Icon(Icons.person, color: Colors.white),
-              title: const Center(
-                child: Text(
-                  'Personal',
-                  style: TextStyle(
-                    color: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                tileColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: const BorderSide(color: Colors.white),
+                ),
+                leading: const Icon(Icons.person, color: Colors.white),
+                title: const Center(
+                  child: Text(
+                    'Personal',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
+                onTap: () {
+                  Navigator.pushNamed(context, 'personal');
+                },
               ),
-              onTap: () {
-                Navigator.pushNamed(context, 'personal');
-              },
             ),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              tileColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: const BorderSide(color: Colors.white),
-              ),
-              leading: const Icon(Icons.photo, color: Colors.white),
-              title: const Center(
-                child: Text(
-                  'Photo',
-                  style: TextStyle(
-                    color: Colors.white,
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                tileColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: const BorderSide(color: Colors.white),
+                ),
+                leading: const Icon(Icons.photo, color: Colors.white),
+                title: const Center(
+                  child: Text(
+                    'Photo',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
+                onTap: () {
+                  Navigator.pushNamed(context, 'photo');
+                },
               ),
-              onTap: () {
-                Navigator.pushNamed(context, 'photo');
-              },
             ),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              tileColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: const BorderSide(color: Colors.white),
-              ),
-              leading: const Icon(Icons.phone, color: Colors.white),
-              title: const Center(
-                child: Text(
-                  'Emergency Contact',
-                  style: TextStyle(
-                    color: Colors.white,
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                tileColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: const BorderSide(color: Colors.white),
+                ),
+                leading: const Icon(Icons.phone, color: Colors.white),
+                title: const Center(
+                  child: Text(
+                    'Emergency Contact',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
+                onTap: () {
+                  Navigator.pushNamed(context, 'emergencyDetails');
+                },
               ),
-              onTap: () {
-                Navigator.pushNamed(context, 'emergencyDetails');
-              },
             ),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              tileColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: const BorderSide(color: Colors.white),
-              ),
-              leading: const Icon(Icons.location_on, color: Colors.white),
-              title: const Center(
-                child: Text(
-                  'Address',
-                  style: TextStyle(
-                    color: Colors.white,
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                tileColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: const BorderSide(color: Colors.white),
+                ),
+                leading: const Icon(Icons.location_on, color: Colors.white),
+                title: const Center(
+                  child: Text(
+                    'Address',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
+                onTap: () {
+                  Navigator.pushNamed(context, 'address');
+                },
               ),
-              onTap: () {},
             ),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              tileColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: const BorderSide(color: Colors.white),
-              ),
-              leading: const Icon(Icons.group, color: Colors.white),
-              title: const Center(
-                child: Text(
-                  'Family Details',
-                  style: TextStyle(
-                    color: Colors.white,
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                tileColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: const BorderSide(color: Colors.white),
+                ),
+                leading: const Icon(Icons.group, color: Colors.white),
+                title: const Center(
+                  child: Text(
+                    'Family Details',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
+                onTap: () {
+                  Navigator.pushNamed(context, 'familyDetails');
+                },
               ),
-              onTap: () {},
             ),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              tileColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: const BorderSide(color: Colors.white),
-              ),
-              leading: const Icon(Icons.favorite, color: Colors.white),
-              title: const Center(
-                child: Text(
-                  'Health Details',
-                  style: TextStyle(
-                    color: Colors.white,
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                tileColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: const BorderSide(color: Colors.white),
+                ),
+                leading: const Icon(Icons.favorite, color: Colors.white),
+                title: const Center(
+                  child: Text(
+                    'Health Details',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
+                onTap: () {
+                  Navigator.pushNamed(context, 'healthDetails');
+                },
               ),
-              onTap: () {},
             ),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              tileColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: const BorderSide(color: Colors.white),
-              ),
-              leading: const Icon(Icons.local_hospital, color: Colors.white),
-              title: const Center(
-                child: Text(
-                  'Health Insurance',
-                  style: TextStyle(
-                    color: Colors.white,
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                tileColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: const BorderSide(color: Colors.white),
+                ),
+                leading: const Icon(Icons.local_hospital, color: Colors.white),
+                title: const Center(
+                  child: Text(
+                    'Health Insurance',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
+                onTap: () {
+                  Navigator.pushNamed(context, 'healthInsurance');
+                },
               ),
-              onTap: () {},
             ),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              tileColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: const BorderSide(color: Colors.white),
-              ),
-              leading: const Icon(Icons.directions_bus, color: Colors.white),
-              title: const Center(
-                child: Text(
-                  'Journey @VI Group',
-                  style: TextStyle(
-                    color: Colors.white,
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                tileColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: const BorderSide(color: Colors.white),
+                ),
+                leading: const Icon(Icons.directions_bus, color: Colors.white),
+                title: const Center(
+                  child: Text(
+                    'Journey @VI Group',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
+                onTap: () {
+                  Navigator.pushNamed(context, 'journey');
+                },
               ),
-              onTap: () {
-                Navigator.pushNamed(context, 'journey');
-              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [

@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() => runApp(
-      const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: EmergencyDetails(),
-      ),
-    );
 
 class EmergencyDetails extends StatefulWidget {
   const EmergencyDetails({super.key});
@@ -107,17 +101,31 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                     const SizedBox(
                       height: 50,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showAddDialog();
+                            },
+                            child: const Text('Add Row'),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
               Column(
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.47,
+                    height: MediaQuery.of(context).size.height * 0.8,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
-                        columns: [
+                        columns: const [
                           DataColumn(label: Text('Sr. No')),
                           DataColumn(label: Text('Name')),
                           DataColumn(label: Text('Relationship')),
@@ -139,13 +147,13 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                                     Row(
                                       children: [
                                         IconButton(
-                                          icon: Icon(Icons.edit),
+                                          icon: const Icon(Icons.edit),
                                           onPressed: () {
                                             showEditDialog(entry.key);
                                           },
                                         ),
                                         IconButton(
-                                          icon: Icon(Icons.delete),
+                                          icon: const Icon(Icons.delete),
                                           onPressed: () {
                                             deleteRow(entry.key);
                                           },
@@ -159,21 +167,6 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                             .toList(),
                       ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 30),
-                        child: FloatingActionButton(
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            child: const Icon(Icons.add),
-                            onPressed: () {
-                              showAddDialog();
-                            }),
-                      ),
-                    ],
                   ),
                 ],
               ),
@@ -221,109 +214,14 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add New Row'),
+          title: const Text('Add New Row'),
           content: Form(
             key: _addFormKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a name';
-                      }
-                      return null;
-                    },
-                  ),
-                  DropdownButtonFormField(
-                    value: selectedRelationship,
-                    items: relationshipOptions.map((String relationship) {
-                      return DropdownMenuItem(
-                        value: relationship,
-                        child: Text(relationship),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectedRelationship = value!;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      labelText: 'Relationship',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select a relationship';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: contactController,
-                    decoration: InputDecoration(
-                      labelText: 'Contact',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a contact number';
-                      }
-                      if (value.length != 10) {
-                        return 'Please enter a 10-digit number';
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.phone,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (_addFormKey.currentState!.validate()) {
-                  addRow(
-                    nameController.text,
-                    selectedRelationship,
-                    contactController.text,
-                  );
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void showEditDialog(int index) async {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController contactController = TextEditingController();
-
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Edit Row'),
-          content: Form(
-            key: _editFormKey,
             child: Column(
               children: [
                 TextFormField(
                   controller: nameController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Name',
                   ),
                   validator: (value) {
@@ -346,19 +244,19 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                       selectedRelationship = value!;
                     });
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Relationship',
                   ),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Please select a relationship';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select a relationship';
+                    }
+                    return null;
+                  },
                 ),
                 TextFormField(
                   controller: contactController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Contact',
                   ),
                   validator: (value) {
@@ -380,7 +278,100 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (_addFormKey.currentState!.validate()) {
+                  addRow(
+                    nameController.text,
+                    selectedRelationship,
+                    contactController.text,
+                  );
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showEditDialog(int index) async {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController contactController = TextEditingController();
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit Row'),
+          content: Form(
+            key: _editFormKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a name';
+                    }
+                    return null;
+                  },
+                ),
+                DropdownButtonFormField(
+                  value: selectedRelationship,
+                  items: relationshipOptions.map((String relationship) {
+                    return DropdownMenuItem(
+                      value: relationship,
+                      child: Text(relationship),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedRelationship = value!;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Relationship',
+                  ),
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Please select a relationship';
+                  //   }
+                  //   return null;
+                  // },
+                ),
+                TextFormField(
+                  controller: contactController,
+                  decoration: const InputDecoration(
+                    labelText: 'Contact',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a contact number';
+                    }
+                    if (value.length != 10) {
+                      return 'Please enter a 10-digit number';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.phone,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -394,7 +385,7 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                   Navigator.of(context).pop();
                 }
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         );

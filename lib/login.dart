@@ -71,58 +71,88 @@ class _LoginState extends State<Login> {
                       const SizedBox(
                         height: 5,
                       ),
+                      // Center(
+                      //   child: Container(
+                      //     height: 170,
+                      //     child: ListView(
+                      //       scrollDirection: Axis.horizontal,
+                      //       children: [
+                      //         promoCard('images/Vishwakarma_Institutes.png'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/Vishwakarma_University.png'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/Universal_Wisdom_School.jpg'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/Wisdom_World_School.jpg'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/Vishwakarma_Vidyalaya.png'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/EduplusNow.png'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/Aakar_Foundry.png'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/Bansilal_Cloth_Market.jpg'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/Eduplus_Campus.png'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/Vishwakarma_Publications.png'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/Roott_Square.png'),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         promoCard('images/Investronaut.png'),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       Center(
                         child: Container(
                           height: 170,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
+                          child: CarouselSlider(
+                            items: [
                               promoCard('images/Vishwakarma_Institutes.png'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/Vishwakarma_University.png'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/Universal_Wisdom_School.jpg'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/Wisdom_World_School.jpg'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/Vishwakarma_Vidyalaya.png'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/EduplusNow.png'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/Aakar_Foundry.png'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/Bansilal_Cloth_Market.jpg'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/Eduplus_Campus.png'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/Vishwakarma_Publications.png'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/Roott_Square.png'),
-                              const SizedBox(
-                                width: 15,
-                              ),
                               promoCard('images/Investronaut.png'),
                             ],
+                            options: CarouselOptions(
+                              autoPlay: true,
+                              autoPlayInterval: Duration(seconds: 2),
+                              enlargeCenterPage: true,
+                              aspectRatio: 2.0,
+                              onPageChanged: (index, reason) {
+                                // Callback when the page changes
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -200,40 +230,38 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 50),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  // Navigator.pushNamed(context, 'verifyOtp');
-                                  if (_formKey.currentState!.validate()) {
-                                    clear();
-                                    print(emailController.text);
-                                    print(passwordController.text);
-                                    print('Login proceed');
-                                  }
-                                },
-                                // ignore: sort_child_properties_last
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 2, vertical: 1),
-                                  child: Text(
-                                    'Login',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                      height: 3,
-                                    ),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // Navigator.pushNamed(context, 'verifyOtp');
+                                if (_formKey.currentState!.validate()) {
+                                  clear();
+                                  Navigator.pushNamed(context, 'home');
+                                  print(emailController.text);
+                                  print(passwordController.text);
+                                  print('Login proceed');
+                                }
+                              },
+                              // ignore: sort_child_properties_last
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 0),
+                                child: Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                    height: 3,
                                   ),
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black87,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black87,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                             ),
@@ -258,7 +286,10 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, 'verifyEmailForPassReset');
+                            },
                             child: const Text(
                               'Forgot password',
                               style: TextStyle(

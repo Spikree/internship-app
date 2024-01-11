@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(
       const MaterialApp(
@@ -27,6 +28,13 @@ class _JourneyState extends State<Journey> {
   DateTime? _toDate;
   String? toDateError;
   bool isCurrentlyWorking = false;
+  Icon eyeIcon = Icon(Icons.visibility);
+  Icon notVisible = Icon(Icons.visibility_off);
+  Icon? isWorking;
+
+  Icon isVisible() {
+    return isCurrentlyWorking ? eyeIcon : notVisible;
+  }
 
   TextEditingController fromDateController = TextEditingController();
   TextEditingController toDateController = TextEditingController();
@@ -47,8 +55,11 @@ class _JourneyState extends State<Journey> {
 
   void addRow(
     String organization,
+    String designation,
     String jobRole,
     String activities,
+    String fromDate,
+    String toDate,
   ) {
     setState(() {
       tableData.add({
@@ -57,18 +68,31 @@ class _JourneyState extends State<Journey> {
         'Designation': designation,
         'Job Role': jobRole,
         'Activities': activities,
+        'From date': fromDate,
+        'To date': toDate,
       });
       srNo++;
     });
   }
 
-  void editRow(int index, String name, String designation, String contact) {
+  void editRow(
+    int index,
+    String organization,
+    String designation,
+    String jobRole,
+    String activities,
+    String fromDate,
+    String toDate,
+  ) {
     setState(() {
       tableData[index] = {
         'Sr. No': tableData[index]['Sr. No']!,
-        'Name': name,
-        'Relationship': designation,
-        'Contact': contact,
+        'Organization': organization,
+        'Designation': designation,
+        'Job Role': jobRole,
+        'Activities': activities,
+        'From date': fromDate,
+        'To date': toDate,
       };
     });
   }
@@ -76,6 +100,7 @@ class _JourneyState extends State<Journey> {
   void deleteRow(int index) {
     setState(() {
       tableData.removeAt(index);
+      srNo--;
     });
   }
 
@@ -126,27 +151,13 @@ class _JourneyState extends State<Journey> {
                     const SizedBox(
                       height: 50,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              showAddDialog();
-                            },
-                            child: Text('Add Row'),
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
               ),
               Column(
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.47,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
@@ -180,9 +191,15 @@ class _JourneyState extends State<Journey> {
                                   DataCell(Text(entry.value['To date'] ?? '')),
                                   DataCell(
                                       Text(entry.value['Activities'] ?? '')),
-                                  DataCell(Text(entry.value[
-                                          'Is currently working in the organization'] ??
-                                      '')),
+                                  DataCell(
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        isVisible(),
+                                      ],
+                                    ),
+                                  ),
                                   DataCell(
                                     Row(
                                       children: [
@@ -207,6 +224,21 @@ class _JourneyState extends State<Journey> {
                             .toList(),
                       ),
                     ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 30),
+                        child: FloatingActionButton(
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            child: const Icon(Icons.add),
+                            onPressed: () {
+                              showAddDialog();
+                            }),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -247,9 +279,6 @@ class _JourneyState extends State<Journey> {
   }
 
   void showAddDialog() async {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController contactController = TextEditingController();
-
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -304,9 +333,7 @@ class _JourneyState extends State<Journey> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your job role';
                       }
-                      if (value.length != 10) {
-                        return 'Please enter your job role';
-                      }
+
                       return null;
                     },
                     keyboardType: TextInputType.phone,
@@ -322,17 +349,18 @@ class _JourneyState extends State<Journey> {
                     ),
                     child: InkWell(
                       onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
+                        DateTime? pickedDate1 = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(1900),
                           lastDate: DateTime.now(),
                         );
 
-                        if (pickedDate != null && pickedDate != _fromDate) {
+                        if (pickedDate1 != null && pickedDate1 != _fromDate) {
                           setState(() {
-                            _fromDate = pickedDate;
-                            fromDateController.text = _fromDate.toString();
+                            _fromDate = pickedDate1;
+                            fromDateController.text =
+                                DateFormat('yyyy-MM-dd').format(_fromDate!);
                           });
                         }
                       },
@@ -352,9 +380,7 @@ class _JourneyState extends State<Journey> {
                             errorText: fromDateError,
                           ),
                           validator: (value) {
-                            if (value!.isEmpty ||
-                                value.length > 10 ||
-                                value.length < 10) {
+                            if (value!.isEmpty) {
                               setState(() {
                                 fromDateError = 'please select a date';
                               });
@@ -387,13 +413,14 @@ class _JourneyState extends State<Journey> {
                         if (pickedDate != null && pickedDate != _toDate) {
                           setState(() {
                             _toDate = pickedDate;
-                            toDateController.text = _toDate.toString();
+                            toDateController.text =
+                                DateFormat('yyyy-MM-dd').format(_toDate!);
                           });
                         }
                       },
                       child: IgnorePointer(
                         child: TextFormField(
-                          controller: fromDateController,
+                          controller: toDateController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -407,9 +434,7 @@ class _JourneyState extends State<Journey> {
                             errorText: fromDateError,
                           ),
                           validator: (value) {
-                            if (value!.isEmpty ||
-                                value.length > 10 ||
-                                value.length < 10) {
+                            if (value!.isEmpty) {
                               setState(() {
                                 fromDateError = 'please select a date';
                               });
@@ -430,14 +455,13 @@ class _JourneyState extends State<Journey> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your activity';
                       }
-                      if (value.length != 10) {
-                        return 'Please enter your activity';
-                      }
+
                       return null;
                     },
                     keyboardType: TextInputType.phone,
                   ),
                   Checkbox(
+                    checkColor: Colors.white,
                     value: isCurrentlyWorking,
                     onChanged: (bool? value) {
                       setState(() {
@@ -461,9 +485,12 @@ class _JourneyState extends State<Journey> {
               onPressed: () {
                 if (_addFormKey.currentState!.validate()) {
                   addRow(
-                    nameController.text,
+                    orginizationController.text,
                     designation,
-                    contactController.text,
+                    jobRoleController.text,
+                    activitiesController.text,
+                    fromDateController.text,
+                    toDateController.text,
                   );
                   Navigator.of(context).pop();
                 }
@@ -477,8 +504,8 @@ class _JourneyState extends State<Journey> {
   }
 
   void showEditDialog(int index) async {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController contactController = TextEditingController();
+    // TextEditingController nameController = TextEditingController();
+    // TextEditingController contactController = TextEditingController();
 
     await showDialog(
       context: context,
@@ -487,60 +514,193 @@ class _JourneyState extends State<Journey> {
           title: Text('Edit Row'),
           content: Form(
             key: _editFormKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Name',
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: orginizationController,
+                    decoration: InputDecoration(
+                      labelText: 'Organization',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a organization name';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a name';
-                    }
-                    return null;
-                  },
-                ),
-                DropdownButtonFormField(
-                  value: designation,
-                  items: designationOptions.map((String designation) {
-                    return DropdownMenuItem(
-                      value: designation,
-                      child: Text(designation),
-                    );
-                  }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      designation = value!;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Relationship',
+                  DropdownButtonFormField(
+                    value: designation,
+                    items: designationOptions.map((String relationship) {
+                      return DropdownMenuItem(
+                        value: relationship,
+                        child: Text(relationship),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        designation = value!;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Designation',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select your designation';
+                      }
+                      return null;
+                    },
                   ),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Please select a relationship';
-                  //   }
-                  //   return null;
-                  // },
-                ),
-                TextFormField(
-                  controller: contactController,
-                  decoration: InputDecoration(
-                    labelText: 'Contact',
+                  TextFormField(
+                    controller: jobRoleController,
+                    decoration: InputDecoration(
+                      labelText: 'Job role',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your job role';
+                      }
+
+                      return null;
+                    },
+                    keyboardType: TextInputType.phone,
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a contact number';
-                    }
-                    if (value.length != 10) {
-                      return 'Please enter a 10-digit number';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.phone,
-                ),
-              ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(244, 243, 243, 1),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: InkWell(
+                      onTap: () async {
+                        DateTime? pickedDate1 = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+
+                        if (pickedDate1 != null && pickedDate1 != _fromDate) {
+                          setState(() {
+                            _fromDate = pickedDate1;
+                            fromDateController.text =
+                                DateFormat('yyyy-MM-dd').format(_fromDate!);
+                          });
+                        }
+                      },
+                      child: IgnorePointer(
+                        child: TextFormField(
+                          controller: fromDateController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            prefixIcon: const Icon(
+                              Icons.calendar_month,
+                              color: Colors.black87,
+                            ),
+                            hintText: "From date",
+                            hintStyle: const TextStyle(
+                                color: Colors.grey, fontSize: 15),
+                            errorText: fromDateError,
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              setState(() {
+                                fromDateError = 'please select a date';
+                              });
+                              return 'Please select a date';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(244, 243, 243, 1),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: InkWell(
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+
+                        if (pickedDate != null && pickedDate != _toDate) {
+                          setState(() {
+                            _toDate = pickedDate;
+                            toDateController.text =
+                                DateFormat('yyyy-MM-dd').format(_toDate!);
+                          });
+                        }
+                      },
+                      child: IgnorePointer(
+                        child: TextFormField(
+                          controller: toDateController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            prefixIcon: const Icon(
+                              Icons.calendar_month,
+                              color: Colors.black87,
+                            ),
+                            hintText: "To date",
+                            hintStyle: const TextStyle(
+                                color: Colors.grey, fontSize: 15),
+                            errorText: fromDateError,
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              setState(() {
+                                fromDateError = 'please select a date';
+                              });
+                              return 'Please select a date';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextFormField(
+                    controller: activitiesController,
+                    decoration: InputDecoration(
+                      labelText: 'Activities',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your activity';
+                      }
+
+                      return null;
+                    },
+                    keyboardType: TextInputType.phone,
+                  ),
+                  Checkbox(
+                    value: isCurrentlyWorking,
+                    onChanged: (bool? value) {
+                      if (value != null) {
+                        setState(() {
+                          isCurrentlyWorking = !value;
+                        });
+                      }
+                    },
+                  ),
+                  Text('Is currently working in the orginization')
+                ],
+              ),
             ),
           ),
           actions: [
@@ -555,9 +715,12 @@ class _JourneyState extends State<Journey> {
                 if (_editFormKey.currentState!.validate()) {
                   editRow(
                     index,
-                    nameController.text,
+                    orginizationController.text,
                     designation,
-                    contactController.text,
+                    jobRoleController.text,
+                    activitiesController.text,
+                    fromDateController.text,
+                    toDateController.text,
                   );
                   Navigator.of(context).pop();
                 }

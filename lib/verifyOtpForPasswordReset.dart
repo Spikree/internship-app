@@ -4,17 +4,17 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 void main() => runApp(const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: VerifyOtp(),
+      home: VerifyOtpReset(),
     ));
 
-class VerifyOtp extends StatefulWidget {
-  const VerifyOtp({super.key});
+class VerifyOtpReset extends StatefulWidget {
+  const VerifyOtpReset({super.key});
 
   @override
-  State<VerifyOtp> createState() => _VerifyOtpState();
+  State<VerifyOtpReset> createState() => _VerifyOtpResetState();
 }
 
-class _VerifyOtpState extends State<VerifyOtp> {
+class _VerifyOtpResetState extends State<VerifyOtpReset> {
   String? otpError;
   final _formKey = GlobalKey<FormState>();
   TextEditingController otpController = TextEditingController();
@@ -116,7 +116,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                   clear();
                                   print(otpController.text);
                                   print('Otp proceed');
-                                  Navigator.pushNamed(context, 'enterDetails');
+                                  Navigator.pushNamed(context, 'resetPassword');
                                 }
                               },
                               // ignore: sort_child_properties_last

@@ -4,18 +4,18 @@ import 'package:flutter/services.dart';
 void main() => runApp(
       const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: EmergencyDetails(),
+        home: HealthCare(),
       ),
     );
 
-class EmergencyDetails extends StatefulWidget {
-  const EmergencyDetails({super.key});
+class HealthCare extends StatefulWidget {
+  const HealthCare({super.key});
 
   @override
-  State<EmergencyDetails> createState() => _EmergencyDetailsState();
+  State<HealthCare> createState() => _HealthCareState();
 }
 
-class _EmergencyDetailsState extends State<EmergencyDetails> {
+class _HealthCareState extends State<HealthCare> {
   final _addFormKey = GlobalKey<FormState>();
   final _editFormKey = GlobalKey<FormState>();
   List<Map<String, String>> tableData = [];
@@ -31,25 +31,46 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
     'Other'
   ];
 
-  void addRow(String name, String relationship, String contact) {
+  void addRow(
+    String providerType,
+    String nameOfDoctor,
+    String nameOfHospital,
+    String hospitalAddress,
+    String hospitalContact,
+    String specialization,
+  ) {
     setState(() {
       tableData.add({
         'Sr. No': srNo.toString(),
-        'Name': name,
-        'Relationship': relationship,
-        'Contact': contact,
+        'provider Type': providerType,
+        'Name of doctor': nameOfDoctor,
+        'Name of hospital': nameOfHospital,
+        'Hospital Address': hospitalAddress,
+        'Hospital Contact': hospitalContact,
+        'Specialization': specialization,
       });
       srNo++;
     });
   }
 
-  void editRow(int index, String name, String relationship, String contact) {
+  void editRow(
+    int index,
+    String providerType,
+    String nameOfDoctor,
+    String nameOfHospital,
+    String hospitalAddress,
+    String hospitalContact,
+    String specialization,
+  ) {
     setState(() {
       tableData[index] = {
         'Sr. No': tableData[index]['Sr. No']!,
-        'Name': name,
-        'Relationship': relationship,
-        'Contact': contact,
+        'provider Type': providerType,
+        'Name of doctor': nameOfDoctor,
+        'Name of hospital': nameOfHospital,
+        'Hospital Address': hospitalAddress,
+        'Hospital Contact': hospitalContact,
+        'Specialization': specialization,
       };
     });
   }
@@ -98,7 +119,7 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                       height: 5,
                     ),
                     const Text(
-                      'Emergency Details',
+                      'Health care provider',
                       style: TextStyle(
                           color: Colors.black87,
                           fontSize: 25,
@@ -107,21 +128,76 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                     const SizedBox(
                       height: 50,
                     ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: null,
+                            child: Text('Medical History'),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: null,
+                            child: Text('Vaccination Records'),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: null,
+                            child: Text('Health Checkup'),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, 'medical');
+                            },
+                            child: Text('Medical Examinations'),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, 'fitness');
+                            },
+                            child: Text('Fitness and Lifestyle'),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, 'health');
+                            },
+                            child: Text('Healthcare Provider'),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
               Column(
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.47,
+                    height: MediaQuery.of(context).size.height * 0.42,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
                         columns: [
                           DataColumn(label: Text('Sr. No')),
-                          DataColumn(label: Text('Name')),
-                          DataColumn(label: Text('Relationship')),
-                          DataColumn(label: Text('Contact')),
+                          DataColumn(label: Text('Provider Type')),
+                          DataColumn(label: Text('Doctor Name')),
+                          DataColumn(label: Text('Hospital Name')),
+                          DataColumn(label: Text('Hospital Address')),
+                          DataColumn(label: Text('Hospital Contact')),
+                          DataColumn(label: Text('Specialization')),
                           DataColumn(label: Text('Action')),
                         ],
                         rows: tableData
@@ -131,10 +207,18 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                               (entry) => DataRow(
                                 cells: [
                                   DataCell(Text(entry.value['Sr. No'] ?? '')),
-                                  DataCell(Text(entry.value['Name'] ?? '')),
                                   DataCell(
-                                      Text(entry.value['Relationship'] ?? '')),
-                                  DataCell(Text(entry.value['Contact'] ?? '')),
+                                      Text(entry.value['Provider Type'] ?? '')),
+                                  DataCell(
+                                      Text(entry.value['Doctor Name'] ?? '')),
+                                  DataCell(
+                                      Text(entry.value['Hospital name'] ?? '')),
+                                  DataCell(Text(
+                                      entry.value['Hospital Address'] ?? '')),
+                                  DataCell(Text(
+                                      entry.value['Hospital Contact'] ?? '')),
+                                  DataCell(Text(
+                                      entry.value['Specialization'] ?? '')),
                                   DataCell(
                                     Row(
                                       children: [
@@ -293,10 +377,12 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
               onPressed: () {
                 if (_addFormKey.currentState!.validate()) {
                   addRow(
-                    nameController.text,
-                    selectedRelationship,
-                    contactController.text,
-                  );
+                      nameController.text,
+                      selectedRelationship,
+                      contactController.text,
+                      nameController.text,
+                      nameController.text,
+                      nameController.text);
                   Navigator.of(context).pop();
                 }
               },
@@ -390,6 +476,9 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                     nameController.text,
                     selectedRelationship,
                     contactController.text,
+                    nameController.text,
+                    nameController.text,
+                    nameController.text,
                   );
                   Navigator.of(context).pop();
                 }
